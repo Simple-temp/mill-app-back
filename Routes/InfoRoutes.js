@@ -71,7 +71,26 @@ InfoRoutes.delete("/deletedatabyid/:id", async(req, res)=>{
     
 })
 
-InfoRoutes.put("/updatedata", async(req, res)=>{
+InfoRoutes.put("/updatedata/:id", async(req, res)=>{
+
+    try{
+
+        const id = req.params.id
+        const { date, day, night} = req.body
+        const info = await Info.findByIdAndUpdate(
+            id,
+            { date, day, night},
+            { new : true }
+        )
+        await info.save()
+        if(info){
+            res.status(200).json({ message: 'Info update successfully' });
+        }
+
+    }catch(err){
+        res.send(err)
+        console.log(err)
+    }
     
 })
 
